@@ -14,7 +14,9 @@ import Login from './Login';
 import User from './store/User'
 import Home from './Home';
 import LogOff from './components/Logoff';
-import GroupsView from './components/GroupsView';
+import GroupsView from './components/groups/GroupsView';
+import GroupList from './components/groups/GroupListView';
+import NewGroup from './components/groups/NewGroup';
 
 function Main() {
   return (
@@ -28,7 +30,9 @@ function Main() {
                 <Route path="/create-new/" render={(props) => <Login createnew={true} />
                   } />
                 <Route path="/logoff/" component={LogOff} />
-                <Route path="/my-groups/" component={GroupsView} />
+                <Route path="/my-groups/" exact component={GroupsView} />
+                <Route path="/my-groups/:id" component={GroupList} />
+                <Route path="/my-groups-create/new-group/" component={NewGroup} />
               </div>
             </App>
 
