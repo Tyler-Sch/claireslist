@@ -27,6 +27,8 @@ const fakeGroupData = [
   }
 ]
 
+
+
 export const userContext = new createContext();
 
 export default function User(props) {

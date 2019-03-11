@@ -5,7 +5,7 @@ export default function NewGroup() {
     <div className="container">
       <br />
       <br />
-      <div className="box brutal-border-dark yellow">
+      <div className="box brutal-border-dark anim-bg-water">
         <form>
           <div className="form-group">
             <label>Group name</label>
