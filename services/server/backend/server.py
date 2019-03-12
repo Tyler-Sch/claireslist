@@ -1,9 +1,29 @@
 from flask import Flask, jsonify
+import os
+from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
-app.config.from_object('backend.config.DevelopmentConfig')
+db = SQLAlchemy()
 
 
-@app.route('/')
-def test_server():
-    return jsonify({'working': True})
+def create_app(script_info=None):
+
+    # instantiate the app
+    app = Flask(__name__)
+
+    # set config
+    app_settings = os.getenv('APP_SETTINGS')
+    app.config.from_object(app_settings)
+
+    # set up extensions
+    db.init_app(app)
+
+    # register blueprints
+    from backend.api.serverBlueprint import server_blueprint
+    app.register_blueprint(server_blueprint)
+
+    # shell context for flask cli
+    @app.shell_context_processor
+    def ctx():
+        return {'app': app, 'db': db}
+
+    return app

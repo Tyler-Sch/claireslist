@@ -13,3 +13,18 @@ services:
     environment:
       - FLASK_APP=backend/server.py
       - FLASK_ENV=development
+      - APP_SETTINGS=backend.config.DevelopmentConfig
+      - DATABASE_URL=postgres://postgres:postgres@backend-db:5432/backend_dev
+      - DATABASE_TEST_URL=postgres://postgres:postgres@backend-db:5432/backend_test
+    depends_on:
+      - backend-db
+
+  backend-db:
+    build:
+      context: ./services/server/backend/db
+      dockerfile: Dockerfile
+    ports:
+      - 5435:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
