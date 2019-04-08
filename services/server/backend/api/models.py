@@ -9,13 +9,19 @@ class Room(db.Model):
     room_name = db.Column(db.Text, nullable=False)
     encoded_room_name = db.Column(db.Text, nullable=False)
     date_created = db.Column(db.DateTime, default=func.now(), nullable=False)
+    private = db.Column(db.Boolean, default=False)
+    password = db.Column(db.Text)
     items = db.relationship('Item')
+
 
     def __init__(self, room_name):
         self.room_name = room_name
         self.encoded_room_name = self.encode_room(room_name)
 
     def encode_room(self, room_name):
+        rooms_with_same_name = Room.query.filter_by(room_name=room_name)
+        if rooms_with_same_name.count() >= 1:
+            room_name = "".join([room_name, str(rooms_with_same_name.count())])
         hashed_room_name = hashlib.md5(room_name.encode()).digest()
         room_encoding = base64.urlsafe_b64encode(hashed_room_name).decode()
         return room_encoding.strip('=')
