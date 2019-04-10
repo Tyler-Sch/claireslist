@@ -98,6 +98,44 @@ def getTable():
         'roomInfo': requested_room.get_items()
     })
 
+@server_blueprint.route('/tables/modify/delete-item')
+@check_private_room
+def delete_record():
+    """
+        input: request with json in form of
+            {
+                requestedRoom:
+                password:
+                action: {
+                    type: delete,
+                    target: [item, room, borrowHistory]
+                    targetId: targetid
+                }
+            }
+    """
+    requested_room = g.room
+    data = request.get_json()
+    pass
+
+@server_blueprint.route('/tables/modify/update')
+@check_private_room
+def update_record():
+    """
+        input: request with json
+            {
+                requestedRoom:
+                password:
+                action: {
+                    type: update,
+                    target: [item, room, or borrowHistory]
+                    targetId: targetid
+                    dataToUpdate: {column: newVal, column2: newVal...}
+                }
+            }
+    """
+    requested_room = g.room
+    data = request.get_json()
+    
 
 @server_blueprint.route('/test/check-decorator')
 @check_private_room
