@@ -94,7 +94,8 @@ def getTable():
 
     return jsonify({
         'status': 'success',
-        'message': 'here is the info you requested'
+        'message': 'here is the info you requested',
+        'roomInfo': requested_room.get_items()
     })
 
 
