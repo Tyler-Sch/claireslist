@@ -12,7 +12,7 @@ class Room(db.Model):
     date_created = db.Column(db.DateTime, default=func.now(), nullable=False)
     private = db.Column(db.Boolean, default=False)
     password = db.Column(db.Text)
-    items = db.relationship('Item')
+    items = db.relationship('Item', cascade='all, delete-orphan')
 
 
     def __init__(self, room_name):
@@ -41,7 +41,10 @@ class Room(db.Model):
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
-    associated_room = db.Column(db.Integer, db.ForeignKey('room.id'))
+    associated_room = db.Column(
+        db.Integer,
+        db.ForeignKey('room.id',ondelete='CASCADE')
+    )
     name = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text)
     who_owns = db.Column(db.Text, nullable=False)
@@ -50,7 +53,7 @@ class Item(db.Model):
     due_back = db.Column(db.DateTime)
     date_posted = db.Column(db.DateTime, default=func.now(), nullable=False)
     active = db.Column(db.Boolean, default=True)
-    history = db.relationship('BorrowHistory')
+    history = db.relationship('BorrowHistory', cascade='all, delete-orphan')
 
     def __init__(self, room, name, who_owns):
         self.associated_room = room.id
@@ -68,7 +71,10 @@ class Item(db.Model):
 
 class BorrowHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    associated_item = db.Column(db.Integer, db.ForeignKey('item.id'), nullable=False)
+    associated_item = db.Column(db.Integer,
+        db.ForeignKey('item.id', ondelete='CASCADE'),
+        nullable=False
+    )
     who_borrowed = db.Column(db.Text, nullable=False)
     date_borrowed = db.Column(db.DateTime, nullable=False, default=func.now())
     due_back = db.Column(db.DateTime)
