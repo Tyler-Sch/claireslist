@@ -47,42 +47,24 @@ def create_table():
     response = {'status': 'success', 'url': new_room.encoded_room_name}
     return jsonify(response)
 
-@server_blueprint.route('/tables/fetch/<tableid>', methods=['POST'])
+@server_blueprint.route('/tables/fetch', methods=['POST'])
 @check_private_room
-def getTable(tableid):
+def getTable():
     """
-        input:
+        input handled by decorator:
             request.json = {
                 'requestedRoom': Encoded room name,
                 'password': None (if not a private room) otherwise password
             }
+        passes on requested room via global context variable
     """
 
     requested_room = g.room
+    return jsonify({
+        'status': 'success',
+        'message': 'here is the info you requested'
+    })
 
-    # if requested_room.private:
-    #     try:
-    #         password = request.get_json()['password']
-    #         if password == requested_room.password:
-    #             data = [i.__dict__ for i in requested_room.items]
-    #             return jsonify({
-    #                 requested_room.room_name: data
-    #             })
-    #         else:
-    #             return jsonify({
-    #                 'status': 'error',
-    #                 'message': 'wrong password'
-    #             }), 400
-    #     except KeyError:
-    #         return jsonify({
-    #             'status': 'error',
-    #             'message': 'must include password for this group'
-    #         })
-    # else:
-    #     data = [i.__dict__ for i in requested_room.items]
-    #     return jsonify({
-    #         requested_room.room_name: data
-    #     })
 
 @server_blueprint.route('/test/check-decorator')
 @check_private_room

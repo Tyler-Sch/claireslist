@@ -29,10 +29,13 @@ class Room(db.Model):
 
     def get_items(self):
         d = {}
-        d['roomName'] = self.room_name
-        d['date_created'] = self.date_created.__str__()
-        d['private'] = self.private
-        d['items'] = {}
+        for i in self.__table__.columns:
+            if i in ['encoded_room_name', 'password']:
+                continue
+            elif i == 'items':
+                d[i.name] == [j.get_info() for j in self.items]
+            else:
+                d[i.name] = getattr(self, i.name)
         return d
 
 
@@ -49,10 +52,21 @@ class Item(db.Model):
     date_posted = db.Column(db.DateTime, default=func.now(), nullable=False)
     active = db.Column(db.Boolean, default=True)
     history = db.relationship('BorrowHistory')
+
     def __init__(self, room, name, who_owns):
         self.associated_room = room.id
         self.name = name
         self.who_owns = who_owns
+
+    def get_info(self):
+        d = {}
+        for i in self.__table__.columns:
+            if i.name == 'history':
+                d['history'] = [j.get_history_info() for j in self.history]
+            else:
+                d[i.name] == getattr(self, i.name)
+
+        return d
 
 
 class BorrowHistory(db.Model):
@@ -68,3 +82,8 @@ class BorrowHistory(db.Model):
     def __init__(self, associated, who_borrowed):
         self.associated_item = associated.id
         self.who_borrowed = who_borrowed
+
+    def get_history_info(self):
+        d = {}
+        for i in self.__table__.columns:
+            d[i.name] = getattr(self, i.name)
