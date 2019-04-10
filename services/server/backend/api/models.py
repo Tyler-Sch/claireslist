@@ -30,12 +30,11 @@ class Room(db.Model):
     def get_items(self):
         d = {}
         for i in self.__table__.columns:
-            if i in ['encoded_room_name', 'password']:
+            if i.name in ['encoded_room_name', 'password']:
                 continue
-            elif i == 'items':
-                d[i.name] == [j.get_info() for j in self.items]
             else:
                 d[i.name] = getattr(self, i.name)
+        d['items'] = [j.get_info() for j in self.items]
         return d
 
 
@@ -61,11 +60,9 @@ class Item(db.Model):
     def get_info(self):
         d = {}
         for i in self.__table__.columns:
-            if i.name == 'history':
-                d['history'] = [j.get_history_info() for j in self.history]
-            else:
-                d[i.name] == getattr(self, i.name)
+            d[i.name] = getattr(self, i.name)
 
+        d['history'] = [j.get_history_info() for j in self.history]
         return d
 
 
@@ -87,3 +84,4 @@ class BorrowHistory(db.Model):
         d = {}
         for i in self.__table__.columns:
             d[i.name] = getattr(self, i.name)
+        return d
