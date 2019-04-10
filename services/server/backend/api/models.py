@@ -1,5 +1,6 @@
 from sqlalchemy.sql import func
 from backend.server import db
+import datetime
 import base64
 import hashlib
 
@@ -25,6 +26,15 @@ class Room(db.Model):
         hashed_room_name = hashlib.md5(room_name.encode()).digest()
         room_encoding = base64.urlsafe_b64encode(hashed_room_name).decode()
         return room_encoding.strip('=')
+
+    def get_items(self):
+        d = {}
+        d['roomName'] = self.room_name
+        d['date_created'] = self.date_created.__str__()
+        d['private'] = self.private
+        d['items'] = {}
+        return d
+
 
 
 class Item(db.Model):

@@ -91,3 +91,17 @@ def test_create_room_invalid_data(client, session):
     assert response.status_code == 400
     assert response.json['status'] == 'error'
     assert response.json['message'] == 'invalid room name'
+
+    post_data = {
+        'roomName': '',
+        'private': True,
+        'password': 'splat'
+    }
+    response = client.post(
+        url_for('server.create_table'),
+        data=json.dumps(post_data),
+        headers={'Content-Type': 'application/json'}
+    )
+    assert response.status_code == 400
+    assert response.json['status'] == 'error'
+    assert response.json['message'] == 'invalid room name'

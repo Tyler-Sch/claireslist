@@ -1,6 +1,7 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, g
 from backend.api.models import *
 from backend.server import db
+from backend.api.decorators import check_private_room
 
 server_blueprint = Blueprint('server', __name__)
 
@@ -41,39 +42,54 @@ def create_table():
     if data['private']:
         new_room.private = True
         new_room.password = data['password']
+        db.session.commit()
 
     response = {'status': 'success', 'url': new_room.encoded_room_name}
     return jsonify(response)
 
 @server_blueprint.route('/tables/fetch/<tableid>', methods=['POST'])
+@check_private_room
 def getTable(tableid):
-    requested_room = Room.query.filter_by(encoded_room_name=tableid)
-    if not requested_room:
-        return jsonify({
-            'status': 'error',
-            'message': 'invalid group'
-        }), 400
+    """
+        input:
+            request.json = {
+                'requestedRoom': Encoded room name,
+                'password': None (if not a private room) otherwise password
+            }
+    """
 
-    if requested_room.private:
-        try:
-            password = request.get_json()['password']
-            if password == requested_room.password:
-                data = [i.__dict__ for i in requested_room.items]
-                return jsonify({
-                    requested_room.room_name: data
-                })
-            else:
-                return jsonify({
-                    'status': 'error',
-                    'message': 'wrong password'
-                }), 400
-        except KeyError:
-            return jsonify({
-                'status': 'error',
-                'message': 'must include password for this group'
-            })
-    else:
-        data = [i.__dict__ for i in requested_room.items]
-        return jsonify({
-            requested_room.room_name: data
-        })
+    requested_room = g.room
+
+    # if requested_room.private:
+    #     try:
+    #         password = request.get_json()['password']
+    #         if password == requested_room.password:
+    #             data = [i.__dict__ for i in requested_room.items]
+    #             return jsonify({
+    #                 requested_room.room_name: data
+    #             })
+    #         else:
+    #             return jsonify({
+    #                 'status': 'error',
+    #                 'message': 'wrong password'
+    #             }), 400
+    #     except KeyError:
+    #         return jsonify({
+    #             'status': 'error',
+    #             'message': 'must include password for this group'
+    #         })
+    # else:
+    #     data = [i.__dict__ for i in requested_room.items]
+    #     return jsonify({
+    #         requested_room.room_name: data
+    #     })
+
+@server_blueprint.route('/test/check-decorator')
+@check_private_room
+def testDecorator():
+    requested_room = g.room
+    return jsonify({
+        'status': 'success',
+        'message': 'greetings from testDecorator function',
+        'requestedRoomName': requested_room.room_name
+    })
