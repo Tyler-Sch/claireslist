@@ -34,3 +34,7 @@ def test_request_for_non_private_room_gets_to_function(session, client):
         headers={'Content-Type': 'application/json'}
     )
     assert response == 200
+
+    # do some more asserts on data when it is finialized
+
+    

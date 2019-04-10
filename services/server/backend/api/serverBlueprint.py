@@ -57,9 +57,41 @@ def getTable():
                 'password': None (if not a private room) otherwise password
             }
         passes on requested room via global context variable
+
+        output:
+            json response {
+                'status':
+                'message':
+                'roomInfo':{
+                    'roomName':
+                    'date_created':
+                    'private':
+                    'items': [
+                        {
+                            'name':
+                            'description':
+                            'who_owns':
+                            'who_has_current':
+                            'how_long_can_borrow':
+                            'due_back':
+                            'date_posted':
+                            'history': [{
+                                id:
+                                who_borrowed:
+                                date_borrowed:
+                                due_back:
+                                returned:
+                                date_returned:
+                                notes:
+                            }...]
+                        },
+                    ...]
+                }
+            }
     """
 
     requested_room = g.room
+
     return jsonify({
         'status': 'success',
         'message': 'here is the info you requested'
