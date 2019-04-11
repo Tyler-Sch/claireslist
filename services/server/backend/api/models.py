@@ -76,7 +76,7 @@ class BorrowHistory(db.Model):
         nullable=False
     )
     who_borrowed = db.Column(db.Text, nullable=False)
-    date_borrowed = db.Column(db.DateTime, nullable=False, default=func.now())
+    date_borrowed = db.Column(db.DateTime)
     due_back = db.Column(db.DateTime)
     returned = db.Column(db.Boolean, default=False)
     date_returned = db.Column(db.DateTime)

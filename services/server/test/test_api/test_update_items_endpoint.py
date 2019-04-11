@@ -131,16 +131,161 @@ def test_update_item_with_new_vals(session, client):
     assert item.due_back == datetime.datetime(2019, 11, 14, 0, 0)
 
 def test_update_borrow_history(session, client):
-    pass
+    r = Room('basic')
+    session.add(r)
+    session.commit()
+    i = Item(r, 'toy trucks', 'hudson')
+    session.add(i)
+    session.commit()
+    bh = BorrowHistory(i, 'Luca')
+    session.add(bh)
+    session.commit()
+
+    data = {
+        'requestedRoom': r.encoded_room_name,
+        'password': '',
+        'action': {
+            'type': 'update',
+            'target': 'borrowHistory',
+            'targetId': bh.id,
+            'dataToUpdate': {
+                'date_borrowed': datetime.date(2019, 11, 14).__str__(),
+                'due_back': datetime.date(2019, 11,18).__str__(),
+                'notes': 'yuck, it smelled funny'
+            }
+        }
+    }
+
+    response = client.post(
+        url_for('server.update_record'),
+        data=json.dumps(data),
+        headers={'Content-Type': 'application/json'}
+    )
+
+    assert response.status_code == 200
+    assert response.json['status'] == 'success'
+    assert response.json['dbresponse'] == 1
+    bhist = BorrowHistory.query.first()
+    assert bhist.date_borrowed == datetime.datetime(2019, 11, 14, 0, 0)
+    assert bhist.notes == 'yuck, it smelled funny'
+    assert bhist.due_back == datetime.datetime(2019, 11, 18, 0, 0)
+
+def add_basic_room_item_and_borrowhistory(session):
+    r = Room('basic')
+    session.add(r)
+    session.commit()
+    i = Item(r, 'toy trucks', 'hudson')
+    session.add(i)
+    session.commit()
+    bh = BorrowHistory(i, 'Luca')
+    session.add(bh)
+    session.commit()
+    return (r, i, bh)
 
 def test_update_room_wrong_attributes(session, client):
-    pass
+    r, item, bh = add_basic_room_item_and_borrowhistory(session)
+    data = {
+        'requestedRoom': r.encoded_room_name,
+        'password': 'testpassword',
+        'action': {
+            'type': 'update',
+            'target': 'room',
+            'targetId': r.id,
+            'dataToUpdate': {
+                'notacolumn': 'I like italian ice'
+            }
+        }
+    }
+    response = client.post(
+        url_for('server.update_record'),
+        data=json.dumps(data),
+        headers={'Content-Type': 'application/json'}
+    )
+
+    assert response.status_code == 400
+
+    assert response.json['status'] == 'error'
+    assert response.json['message'] == 'invalid columns for this update'
+
 
 def test_try_update_with_wrong_password(session, client):
-    pass
+    r, item, bh = add_basic_room_item_and_borrowhistory(session)
+    r.private = True
+    r.password = 'noonewillguessmypassword'
+    session.commit()
+
+    data = {
+        'requestedRoom': r.encoded_room_name,
+        'password': 'testpassword',
+        'action': {
+            'type': 'update',
+            'target': 'room',
+            'targetId': r.id,
+            'dataToUpdate': {
+                'room_name': 'test2',
+                'private': True,
+                'password': 'newpassword'
+            }
+        }
+    }
+    response = client.post(
+        url_for('server.update_record'),
+        data=json.dumps(data),
+        headers={'Content-Type': 'application/json'}
+    )
+    assert response.status_code == 400
+    assert Room.query.first().room_name != 'test2'
+
+    assert response.json['status'] == 'error'
+    assert response.json['message'] == 'invalid password'
+
 
 def test_try_update_missing_action_info(session, client):
-    pass
+    r, item, bh = add_basic_room_item_and_borrowhistory(session)
+    r.private = True
+    r.password = 'testpassword'
+    session.commit()
+
+    data = {
+        'requestedRoom': r.encoded_room_name,
+        'password': 'testpassword',
+    }
+
+    response = client.post(
+        url_for('server.update_record'),
+        data=json.dumps(data),
+        headers={'Content-Type': 'application/json'}
+    )
+
+    assert response.status_code == 400
+    data = response.json
+    assert data['status'] == 'error'
+
 
 def test_try_update_unknown_target(session, client):
-    pass
+    r, item, bh = add_basic_room_item_and_borrowhistory(session)
+
+    data = {
+        'requestedRoom': r.encoded_room_name,
+        'password': 'testpassword',
+        'action': {
+            'type': 'update',
+            'target': 'roo',
+            'targetId': r.id,
+            'dataToUpdate': {
+                'room_name': 'test2',
+                'private': True,
+                'password': 'newpassword'
+            }
+        }
+    }
+    response = client.post(
+        url_for('server.update_record'),
+        data=json.dumps(data),
+        headers={'Content-Type': 'application/json'}
+    )
+
+    assert response.status_code == 400
+    data = response.json
+    assert data['status'] == 'error'
+    assert data['message'] == 'unknown key'

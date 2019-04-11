@@ -136,21 +136,39 @@ def update_record():
     requested_room = g.room
     data = request.get_json()
 
-    info = data['action']
+    info = data.get('action')
+    if not info:
+        return jsonify({
+            'status': 'error',
+            'message': 'no action supplied'
+        }), 400
+
     if info['type'] != 'update':
         return jsonify({
             'status': 'error',
             'message': 'invalid action type for endpoint'
-        })
+        }), 400
     target_dict = {
         'item': Item,
         'room': Room,
         'borrowHistory': BorrowHistory
     }
-    target_id = int(info['targetId'])
-    target = target_dict[info['target']]
-    check = db.session.query(target).filter(target.id == target_id).update(
-            {getattr(target,k): v for k,v in info['dataToUpdate'].items()})
+    try:
+        target_id = int(info['targetId'])
+        target = target_dict[info['target']]
+    except KeyError:
+        return jsonify({
+            'status': 'error',
+            'message': 'unknown key'
+        }), 400
+    try:
+        check = db.session.query(target).filter(target.id == target_id).update(
+                {getattr(target,k): v for k,v in info['dataToUpdate'].items()})
+    except AttributeError:
+        return jsonify({
+            'status': 'error',
+            'message': 'invalid columns for this update'
+        }), 400
 
     db.session.commit()
     return jsonify({
