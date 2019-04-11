@@ -117,7 +117,7 @@ def delete_record():
     data = request.get_json()
     pass
 
-@server_blueprint.route('/tables/modify/update')
+@server_blueprint.route('/tables/modify/update', methods=['POST'])
 @check_private_room
 def update_record():
     """
@@ -135,7 +135,30 @@ def update_record():
     """
     requested_room = g.room
     data = request.get_json()
-    
+
+    info = data['action']
+    if info['type'] != 'update':
+        return jsonify({
+            'status': 'error',
+            'message': 'invalid action type for endpoint'
+        })
+    target_dict = {
+        'item': Item,
+        'room': Room,
+        'borrowHistory': BorrowHistory
+    }
+    target_id = int(info['targetId'])
+    target = target_dict[info['target']]
+    check = db.session.query(target).filter(target.id == target_id).update(
+            {getattr(target,k): v for k,v in info['dataToUpdate'].items()})
+
+    db.session.commit()
+    return jsonify({
+        'status': 'success',
+        'message': 'data modified successfully',
+        'dbresponse': check
+    })
+
 
 @server_blueprint.route('/test/check-decorator')
 @check_private_room
