@@ -1,15 +1,28 @@
+import './css/bfx.css';
+import './css/buix.css';
+import './css/butch.css';
+import './css/core.css';
+import './css/default.css';
+import './css/flavors.css';
+import './css/animations.css';
+import './css/rebar.css';
+
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import CreateNew from './components/createNew';
 import Welcome from './components/welcome';
+import Title from './components/title';
 function App() {
 
   return (
-    <div>
+    <div className='bubble-gum-grape-gradient'
+      style={{
+        'min-height':'100vh',
+        'position': 'absolute',
+        'min-width': '100vw'
+      }}>
       <BrowserRouter>
-        <div className="title">
-          <h1>Claire's List</h1>
-        </div>
+        <Title />
         <div className="body">
           <div className="paths">
             <Route path="/" exact component={Welcome} />
