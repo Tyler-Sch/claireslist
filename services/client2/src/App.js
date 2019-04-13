@@ -9,7 +9,7 @@ import './css/rebar.css';
 
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import CreateNew from './components/createNew';
+import CreateNew from './components/createGroup/createNew';
 import Welcome from './components/welcome';
 import Title from './components/title';
 function App() {
