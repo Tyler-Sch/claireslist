@@ -2,8 +2,10 @@ from flask import Blueprint, jsonify, request, g
 from backend.api.models import *
 from backend.server import db
 from backend.api.decorators import check_private_room
+from flask_cors import CORS
 
 server_blueprint = Blueprint('server', __name__)
+CORS(server_blueprint)
 
 @server_blueprint.route('/')
 def index():

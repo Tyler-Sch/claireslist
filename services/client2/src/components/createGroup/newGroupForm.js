@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function CreateNewGroupForm(props) {
 
-    const [privateState, setPrivateState] = useState(true);
+    // const [privateState, setPrivateState] = useState(true);
 
     const handleRadioClick = () => {
-      setPrivateState(!privateState);
-      console.log(props);
+      props.setIsPrivate(!props.isPrivate);
+
     }
 
     return (
@@ -22,10 +22,18 @@ export default function CreateNewGroupForm(props) {
             </div>
             <div className="form-group">
               <label>Private: </label>
-                <input onClick={handleRadioClick} type="radio" checked={!privateState}/>Yep
-                <input onClick={handleRadioClick} type="radio" checked={privateState}/>Naw
+                <input
+                  onClick={handleRadioClick}
+                  type="radio"
+                  checked={props.isPrivate}
+                /> Yep
+                <input
+                  onClick={handleRadioClick}
+                  type="radio"
+                  checked={!props.isPrivate}
+                /> Nope
             </div>
-            { !privateState && (
+            { props.isPrivate && (
         <div>
 
             <div className="form-group">
@@ -50,8 +58,8 @@ export default function CreateNewGroupForm(props) {
         </div>)  }
 
             <div className='form-group'>
-              <button className=' bubble-gum padding full-btn box-shadow'>
-                <p className="huge">set it off</p>
+              <button className=' bubble-gum padding comfortable full-btn box-shadow'>
+                <p className="huge glitch">set it off</p>
               </button>
             </div>
           </form>
