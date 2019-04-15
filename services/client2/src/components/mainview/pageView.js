@@ -10,6 +10,11 @@ export default function PageView(props) {
   const [roomData, setRoomData] = useState({});
   const [roomId, setRoomId] = useState(props.match.params.id);
 
+  const requestData = {
+    requestedRoom: roomId,
+    password
+  };
+
   useEffect(() => {
     // check if password needed and download info
     getRoomInfo();
@@ -17,11 +22,8 @@ export default function PageView(props) {
 
   const getRoomInfo = async () => {
     const url = 'http://localhost:5001/tables/fetch';
-    const requestData = {
-      requestedRoom: roomId,
-      password
-    };
-    console.log(roomId);
+
+    // console.log(roomId);
 
     const response = await fetch(
       url,
@@ -35,7 +37,7 @@ export default function PageView(props) {
     )
 
     const responseData = await response.json()
-    console.log(responseData);
+    // console.log(responseData);
     if (responseData.status === 'password needed') {
       setNeedsPassword(true);
       window.location.hash = 'password-modal';
@@ -43,7 +45,7 @@ export default function PageView(props) {
     }
     else if (responseData.status === 'success'){
       setRoomData(responseData.roomInfo);
-      console.log(responseData.roomInfo);
+      // console.log(responseData.roomInfo);
       window.location.hash = '';
       setIsLoading(false);
     }
@@ -59,6 +61,10 @@ export default function PageView(props) {
     e.preventDefault();
     setNeedsPassword(false);
     getRoomInfo();
+  }
+
+  const updateItemInfo = () => {
+
   }
 
 
