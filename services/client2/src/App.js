@@ -12,6 +12,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import CreateNew from './components/createGroup/createNew';
 import Welcome from './components/welcome';
 import Title from './components/title';
+import PageView from './components/mainview/pageView';
 function App() {
 
   return (
@@ -27,6 +28,7 @@ function App() {
           <div className="paths">
             <Route path="/" exact component={Welcome} />
             <Route path="/create-new" component={CreateNew} />
+            <Route path="/group/:id" component={PageView} />
           </div>
         </div>
       </BrowserRouter>
