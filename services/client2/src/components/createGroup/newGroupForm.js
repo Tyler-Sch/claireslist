@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import TextInput from './textInput';
 
 export default function CreateNewGroupForm(props) {
 
@@ -12,14 +13,12 @@ export default function CreateNewGroupForm(props) {
     return (
         <div className="form-container">
           <form onSubmit={props.submitCreateRoom}>
-            <div className="form-group">
-              <label>New Room name:
-              <input type="text"
-                  value={props.roomNameInput}
-                  onChange={(e) => props.setRoomNameInput(e.target.value)}
-              />
-              </label>
-            </div>
+            <TextInput
+              label='New room name: '
+              value={props.roomNameInput}
+              onchange={props.setRoomNameInput}
+              type="text"
+            />
             <div className="form-group">
               <label>Private: </label>
                 <input
@@ -35,26 +34,19 @@ export default function CreateNewGroupForm(props) {
             </div>
             { props.isPrivate && (
         <div>
+           <TextInput
+              label="password"
+              type="password"
+              value={props.passwordInput}
+              onchange={props.setPasswordInput}
 
-            <div className="form-group">
-              <label>Password:
-                <input
-                    type="password"
-                    value={props.passwordInput}
-                    onChange={(e) => props.setPasswordInput(e.target.value)}
-                />
-              </label>
-            <div className="form-group">
-              <label>password again:
-                  <input
-                      type="password"
-                      value={props.confirmPassword}
-                      onChange={(e) => props.setConfirmPassword(e.target.value)}
-                  />
-              </label>
-              </div>
-
-            </div>
+            />
+          <TextInput
+            label="password again"
+            type="password"
+            value={props.confirmPassword}
+            onchange={props.setConfirmPassword}
+          />
         </div>)  }
 
             <div className='form-group'>
