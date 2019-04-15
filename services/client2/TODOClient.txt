@@ -1,0 +1,3 @@
+CreateNewGroup
+  - have notifications for errors on the
+    form come up when entered incorrectly.

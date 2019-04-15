@@ -6,7 +6,8 @@ export default function LoadingScreen(props) {
     <div className="section">
         <br/>
       <div className="loading-icon-container row">
-        <img className='glitch col-xs-12' height='200px' src={cthulhu} />
+        <img className='throb col-xs-12' height='250px' src={cthulhu}
+            alt='loading icon' />
       </div>
     </div>
   )

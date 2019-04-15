@@ -18,9 +18,9 @@ function App() {
   return (
     <div className='bubble-gum-grape-gradient'
       style={{
-        'min-height':'100vh',
+        'minHeight':'100vh',
         'position': 'absolute',
-        'min-width': '100vw'
+        'minWidth': '100vw'
       }}>
       <BrowserRouter>
         <Title />
