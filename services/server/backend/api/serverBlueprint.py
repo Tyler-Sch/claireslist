@@ -165,7 +165,7 @@ def update_record():
         }), 400
     try:
         check = db.session.query(target).filter(target.id == target_id).update(
-                {getattr(target,k): v for k,v in info['dataToUpdate'].items()})
+                {getattr(target, k): v for k,v in info['dataToUpdate'].items()})
     except AttributeError:
         return jsonify({
             'status': 'error',
@@ -179,6 +179,63 @@ def update_record():
         'dbresponse': check
     })
 
+@server_blueprint.route('/tables/modify/create', methods=['POST'])
+@check_private_room
+def create_item():
+    """
+        input:
+            request with json
+            {
+                requestedRoom:
+                password:
+                action: {
+                    type: create,
+                    target: item,
+                    name:
+                    who_owns:
+                    optional_fields: {
+                        description:
+                        who_has_current:
+                        how_long_can_borrow:
+                        due_back:
+
+                    }
+
+                }
+            }
+    """
+
+    room = g.room
+    data = request.get_json()
+    info = data.get('action')
+    response = {
+        'status': 'error',
+        'message': 'Something went wrong'
+    }
+
+    if info is None or info.get('type') != 'create':
+        response['message'] = 'Wrong request data'
+        return jsonify(response), 400
+    if len(info.get('name')) < 2 or info.get('who_owns') is None:
+        response['message'] = 'name of new item is too short or data is wrong'
+        return jsonify(response), 400
+
+    new_item = Item(room, info.get('name'), info.get('who_owns'))
+    db.session.add(new_item)
+    db.session.commit()
+
+    check = db.session.query(Item).filter(Item.id == new_item.id).update(
+            {getattr(Item, k): v for k,v in info['optional_fields'].items()})
+
+    db.session.commit()
+
+    if check == 1:
+        response['status'] = 'success'
+        reponse['message'] = f'Item added to {room.room_name}'
+        return jsonify(response)
+    else:
+        response['message'] = 'error adding item to database'
+        return jsonify(response), 400
 
 @server_blueprint.route('/test/check-decorator')
 @check_private_room

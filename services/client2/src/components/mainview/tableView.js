@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import cthulhu from '../../images/cthulhu(1).svg';
 import ItemView from './items/itemView';
 
 export default function TableView(props) {
+  const [createNewItem, setCreateNewItem] = useState(false);
+  const [targetModifyItemId, setTargetModifyItemId] = useState(null);
+
   console.log(props)
   return (
     <div>
@@ -14,9 +17,14 @@ export default function TableView(props) {
       </div>
 
       <div className="container">
-          <div className="honey box-shadow">
-          <ItemView items={props.items} />
-          </div>
+          {
+            !createNewItem
+            ? (<div className="honey box-shadow">
+              <ItemView items={props.items} />
+              </div>)
+            : (<h1>Create new page here</h1>)
+          }
+
       </div>
     </div>
   )

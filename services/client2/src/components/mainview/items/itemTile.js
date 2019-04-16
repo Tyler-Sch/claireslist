@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 
-function ItemAux(props) {
+function ItemAuxInfo(props) {
 
   return (
 
@@ -34,7 +34,7 @@ export default function Item(props) {
   };
 
   const additInfo = Object.keys(additionalInfoMap).map(i => (
-    <ItemAux heading={i} value={props[additionalInfoMap[i]]} />
+    <ItemAuxInfo heading={i} value={props[additionalInfoMap[i]]} />
   ));
   console.log(additInfo)
 
@@ -55,7 +55,6 @@ export default function Item(props) {
           <button className="full-btn margin">Change info</button>
         </div>
       </div>
-
     }
     </div>
   )

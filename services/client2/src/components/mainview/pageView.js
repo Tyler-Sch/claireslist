@@ -63,10 +63,6 @@ export default function PageView(props) {
     getRoomInfo();
   }
 
-  const updateItemInfo = () => {
-
-  }
-
 
   return(
     <div>
