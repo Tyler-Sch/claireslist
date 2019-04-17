@@ -219,19 +219,26 @@ def create_item():
     if len(info.get('name')) < 2 or info.get('who_owns') is None:
         response['message'] = 'name of new item is too short or data is wrong'
         return jsonify(response), 400
+    optfields = info.get('optional_fields')
 
     new_item = Item(room, info.get('name'), info.get('who_owns'))
     db.session.add(new_item)
     db.session.commit()
 
-    check = db.session.query(Item).filter(Item.id == new_item.id).update(
-            {getattr(Item, k): v for k,v in info['optional_fields'].items()})
+    try:
+        if len(info['optional_fields']) > 0:
+            check = db.session.query(Item).filter(Item.id == new_item.id).update(
+                    {getattr(Item, k): v for k,v in info['optional_fields'].items()})
 
-    db.session.commit()
+            db.session.commit()
+        else:
+            check = 1
+    except KeyError:
+        check = 1
 
     if check == 1:
         response['status'] = 'success'
-        reponse['message'] = f'Item added to {room.room_name}'
+        response['message'] = f'Item added to {room.room_name}'
         return jsonify(response)
     else:
         response['message'] = 'error adding item to database'
