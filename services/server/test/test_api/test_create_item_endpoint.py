@@ -129,4 +129,41 @@ def test_create_room_empty_optional_fields(session, client):
         assert resp_data['status'] == 'success'
         assert resp_data['message'] == 'Item added to basic room'
 
-        
+def test_create_room_invalid_basic_info(session, client):
+    r = Room('basic room')
+    session.add(r)
+    session.commit()
+
+    data = {
+        'requestedRoom': r.encoded_room_name,
+        'password': '',
+        'action': {
+            'type': 'create',
+            'target': 'item',
+            'name': 't',
+            'who_owns': 'Hudson',
+            'optional_fields': {}
+        }
+    }
+
+    response = client.post(
+        url_for('server.create_item'),
+        data=json.dumps(data),
+        headers={'Content-Type': 'application/json'}
+    )
+    assert response.status_code == 400
+    assert response.get_json()['status'] == 'error'
+    error_string = 'name of new item is too short or data is wrong'
+    assert response.get_json()['message'] == error_string
+
+    data['name'] = 'backhoe loader'
+    data['who_owns']: ''
+
+    response = client.post(
+        url_for('server.create_item'),
+        data=json.dumps(data),
+        headers={'Content-Type': 'application/json'}
+    )
+    assert response.status_code == 400
+    assert response.get_json()['status'] == 'error'
+    assert response.get_json()['message'] == error_string
