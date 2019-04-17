@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import CreateNewGroupForm from './newGroupForm';
+import { Redirect } from 'react-router-dom';
 
 export default function CreateNew(props) {
 
-  // const [privateState, setPrivateState] = useState(true);
-  //
-  // const handleRadioClick = () => {
-  //   setPrivateState(!privateState);
-  // }
     const [roomNameInput, setRoomNameInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -15,6 +11,8 @@ export default function CreateNew(props) {
     const [isCreatingNew, setIsCreatingNew] = useState(false);
     const [hasCreated, setHasCreated] = useState(false);
     const [roomLengthError, setRoomLengthError] = useState(false);
+    const [redirect, setRedirect] = useState(false);
+    const [newUrl, setNewUrl] = useState(null);
 
     const submitCreateRoom = async (e) => {
         e.preventDefault();
@@ -49,10 +47,17 @@ export default function CreateNew(props) {
             body: JSON.stringify(data)
           }
         )
-        console.log(response);
-        console.log(await response.json())
+
         // redirect info should go here. make sure to
         // add a thing for loading (when isCreatingNew = true)
+        const responseData = await response.json()
+        if (responseData.status === 'success') {
+          console.log('new group created successfully');
+          const encodedRoomName = responseData.url;
+          setNewUrl(encodedRoomName);
+          setRedirect(true);
+        }
+
     }
 
 
@@ -61,12 +66,17 @@ export default function CreateNew(props) {
     <div className='container box-shadow-double lemon-lime-gradient padding'
           style={{'min-height': '30em'}}
       >
-        <CreateNewGroupForm {...{roomNameInput, passwordInput,
-                                setRoomNameInput, setPasswordInput,
-                                submitCreateRoom, confirmPassword,
-                                setConfirmPassword, isPrivate, setIsPrivate,
-                                roomLengthError
-                            }} />
+      {
+        redirect
+        ? (<Redirect to={'/group/' + newUrl} /> )
+      : (<CreateNewGroupForm {...{roomNameInput, passwordInput,
+                              setRoomNameInput, setPasswordInput,
+                              submitCreateRoom, confirmPassword,
+                              setConfirmPassword, isPrivate, setIsPrivate,
+                              roomLengthError
+                          }} />)
+      }
+
     </div>
   )
 }
