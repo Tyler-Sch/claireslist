@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import LoadingScreen from '../loading';
 import TableView from './tableView';
-import TextInput from '../createGroup/textInput';
+import TextInput from '../generics/textInput';
+import Modal from '../generics/modal';
 
 export default function PageView(props) {
   const [isLoading, setIsLoading] = useState(true);
@@ -9,6 +10,7 @@ export default function PageView(props) {
   const [password, setPassword] = useState('');
   const [roomData, setRoomData] = useState({});
   const [roomId, setRoomId] = useState(props.match.params.id);
+  const [error, setError] = useState(false);
 
   const requestData = {
     requestedRoom: roomId,
@@ -22,8 +24,6 @@ export default function PageView(props) {
 
   const getRoomInfo = async () => {
     const url = 'http://localhost:5001/tables/fetch';
-
-    // console.log(roomId);
 
     const response = await fetch(
       url,
@@ -53,6 +53,7 @@ export default function PageView(props) {
       console.log('There was an error in retrieving room info');
       console.log(roomId);
       console.log(responseData);
+      setError(true);
     }
 
   }
@@ -66,13 +67,7 @@ export default function PageView(props) {
 
   return(
     <div>
-      <div id="password-modal" className="modal cheddar">
-        <div className="modal-content">
-          <div className="modal-head">
-            <p className="huge">
-              password?
-            </p>
-          </div>
+      <Modal header='Password?' id="password-modal">
           <form onSubmit={submitPassword}>
             <TextInput
               label='Password'
@@ -82,14 +77,13 @@ export default function PageView(props) {
               />
             <button type="submit" className="full-btn">Submit</button>
           </form>
-        </div>
-      </div>
+      </Modal>
       {
         isLoading
         ? <LoadingScreen />
       : <TableView {...roomData}/>
       }
-
+      { error && <p className="text-center">Something appears to have gone wrong</p>}
     </div>
 
 

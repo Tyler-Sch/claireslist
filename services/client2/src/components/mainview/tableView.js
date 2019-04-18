@@ -1,29 +1,33 @@
 import React, { useState } from 'react';
 import cthulhu from '../../images/cthulhu(1).svg';
 import ItemView from './items/itemView';
+import Modal from '../generics/modal';
+import TextInput from '../generics/textInput';
+import AddItemForm from './items/itemInputForm';
 
 export default function TableView(props) {
-  const [createNewItem, setCreateNewItem] = useState(false);
   const [targetModifyItemId, setTargetModifyItemId] = useState(null);
 
-  console.log(props)
   return (
     <div>
       <div className="sticky-right">
-        <img height="35px" src={cthulhu} />
+        <a href="#create-item-modal">
+          <img height="35px" src={cthulhu} />
+        </a>
       </div>
+      <Modal id="create-item-modal" header="create new item" >
+        <AddItemForm />
+      </Modal>
       <div className="head">
         <p className='text-center bigger'>{props.room_name}</p>
       </div>
 
       <div className="container">
-          {
-            !createNewItem
-            ? (<div className="honey box-shadow">
-              <ItemView items={props.items} />
-              </div>)
-            : (<h1>Create new page here</h1>)
-          }
+        <div className="honey box-shadow">
+          <ItemView items={props.items} />
+        </div>
+
+
 
       </div>
     </div>

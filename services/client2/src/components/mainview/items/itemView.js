@@ -7,12 +7,12 @@ export default function ItemView(props) {
   return (
     <div className="item-menu container">
       <div className="row">
-        <div className="col-xs-6 glitch">
+        <div className="col-xs-6">
           <p className=" bigger text-left">
             Item
           </p>
         </div>
-        <div className="col-xs-6 glitch">
+        <div className="col-xs-6">
           <p className="text-right bigger">
             Who owns?
           </p>

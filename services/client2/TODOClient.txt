@@ -1,3 +1,7 @@
 CreateNewGroup
   - have notifications for errors on the
     form come up when entered incorrectly.
+
+mainview
+  - needs better names for files
+  

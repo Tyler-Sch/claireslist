@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import TextInput from './textInput';
+import TextInput from '../generics/textInput';
 
 export default function CreateNewGroupForm(props) {
 
