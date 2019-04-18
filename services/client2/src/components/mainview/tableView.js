@@ -6,9 +6,37 @@ import TextInput from '../generics/textInput';
 import AddItemForm from './items/itemInputForm';
 
 export default function TableView(props) {
-  const [targetModifyItemId, setTargetModifyItemId] = useState(null);
+    const [targetModifyItemId, setTargetModifyItemId] = useState(null);
+    const urlBase = 'http://localhost:5001';
+    const urlSuffix = '/tables/modify/create';
+    const baseRequestObj = props.baseRequestObj;
 
-  return (
+    const submitItemInfo = async (itemObj) => {
+        // function for adding new items to the database
+        const reqData = baseRequestObj;
+        reqData['action'] = {
+            'type': 'create',
+            'target': 'item',
+            ...itemObj
+        }
+        const response = await fetch(
+          urlBase + urlSuffix,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reqData)
+          }
+         );
+
+        const data = await response.json();
+        // need to add a check for if the item is added to the room
+        // successfully
+        props.getRoomInfo();
+    }
+
+    return (
     <div>
       <div className="sticky-right">
         <a href="#create-item-modal">
@@ -16,7 +44,7 @@ export default function TableView(props) {
         </a>
       </div>
       <Modal id="create-item-modal" header="create new item" >
-        <AddItemForm />
+        <AddItemForm submitItemInfo={submitItemInfo} />
       </Modal>
       <div className="head">
         <p className='text-center bigger'>{props.room_name}</p>
@@ -31,5 +59,5 @@ export default function TableView(props) {
 
       </div>
     </div>
-  )
+)
 }
