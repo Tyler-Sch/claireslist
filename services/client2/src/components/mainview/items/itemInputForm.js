@@ -18,7 +18,7 @@ const needInfo = {
 export default function AddItemForm(props) {
     const [name, setName] = useState('');
     const [who_owns, setWhoOwns] = useState('');
-    const [due_back, setDueBack] = useState(new Date());
+    const [due_back, setDueBack] = useState('');
     const [how_long_can_borrow, setHowLongBorrow] = useState('');
     const [description, setDescription] = useState('');
 
