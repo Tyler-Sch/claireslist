@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 
 function ItemAuxInfo(props) {
-
   return (
 
       <div className="row border-solid-thin">

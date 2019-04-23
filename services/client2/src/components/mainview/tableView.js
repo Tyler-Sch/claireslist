@@ -38,11 +38,7 @@ export default function TableView(props) {
 
     return (
     <div>
-      <div className="sticky-right">
-        <a href="#create-item-modal">
-          <img height="35px" src={cthulhu} />
-        </a>
-      </div>
+
       <Modal id="create-item-modal" header="create new item" >
         <AddItemForm submitItemInfo={submitItemInfo} />
       </Modal>
@@ -51,6 +47,12 @@ export default function TableView(props) {
       </div>
 
       <div className="container">
+        <div className="">
+          <a href="#create-item-modal">
+            <img height="35px" src={cthulhu} style={{'position': 'sticky'}}/>
+            <p className="">create new</p>
+          </a>
+        </div>
         <div className="honey box-shadow">
           <ItemView items={props.items} />
         </div>
