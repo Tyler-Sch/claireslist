@@ -1,5 +1,5 @@
 import React from 'react';
-import cthulhu from '../images/cthulhu(1).svg';
+import cthulhu from '../../images/cthulhu(1).svg';
 
 export default function LoadingScreen(props) {
   return (

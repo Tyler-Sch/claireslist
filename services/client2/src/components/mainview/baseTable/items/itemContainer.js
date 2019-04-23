@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Item from './itemTile';
 
-export default function ItemView(props) {
+export default function ItemContainer(props) {
   // take a list of items in props and display each one
 
   return (

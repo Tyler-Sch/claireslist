@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import LoadingScreen from '../loading';
-import TableView from './tableView';
+import LoadingScreen from '../generics/loading';
+import TableView from './baseTable/tableView';
 import TextInput from '../generics/textInput';
 import Modal from '../generics/modal';
+
+// has logic for checking passwords if one is required to access the room
+// When a person is granted access, this function passes basic neccessary
+// request data to its' child TableView (roomId and password)
 
 export default function PageView(props) {
   const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +42,7 @@ export default function PageView(props) {
     )
 
     const responseData = await response.json()
+
     if (responseData.status === 'password needed') {
       setNeedsPassword(true);
       window.location.hash = 'password-modal';

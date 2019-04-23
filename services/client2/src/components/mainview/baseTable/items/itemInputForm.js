@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import TextInput from '../../generics/textInput';
+import TextInput from '../../../generics/textInput';
 
 // can refactor this out into own file
 const additionalInfoMap = {

@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import cthulhu from '../../images/cthulhu(1).svg';
-import ItemView from './items/itemView';
-import Modal from '../generics/modal';
-import TextInput from '../generics/textInput';
+import cthulhu from '../../../images/cthulhu(1).svg';
+import ItemContainer from './items/itemContainer';
+import Modal from '../../generics/modal';
+import TextInput from '../../generics/textInput';
 import AddItemForm from './items/itemInputForm';
+
+// TableView contains the logic for creating ( and updating soon) items on
+// the list.
 
 export default function TableView(props) {
     const [targetModifyItemId, setTargetModifyItemId] = useState(null);
     const urlBase = 'http://localhost:5001';
     const urlSuffix = '/tables/modify/create';
-    const baseRequestObj = props.baseRequestObj;
+    const { baseRequestObj, getRoomInfo } = props;
 
     const submitItemInfo = async (itemObj) => {
         // function for adding new items to the database
@@ -33,7 +36,8 @@ export default function TableView(props) {
         const data = await response.json();
         // need to add a check for if the item is added to the room
         // successfully
-        props.getRoomInfo();
+        // also need to catch any sort of network error
+        getRoomInfo();
     }
 
     return (
@@ -49,12 +53,12 @@ export default function TableView(props) {
       <div className="container">
         <div className="">
           <a href="#create-item-modal">
-            <img height="35px" src={cthulhu} style={{'position': 'sticky'}}/>
+            <img height="35px" src={cthulhu} />
             <p className="">create new</p>
           </a>
         </div>
         <div className="honey box-shadow">
-          <ItemView items={props.items} />
+          <ItemContainer items={props.items} />
         </div>
 
 

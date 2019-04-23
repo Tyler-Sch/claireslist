@@ -10,8 +10,8 @@ import './css/rebar.css';
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import CreateNew from './components/createGroup/createNew';
-import Welcome from './components/welcome';
-import Title from './components/title';
+import Welcome from './components/welcomeView/welcome';
+import Title from './components/base/title';
 import PageView from './components/mainview/pageView';
 function App() {
 

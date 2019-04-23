@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import CreateNewList from './newList';
-import WelcomeText from './text';
+import WelcomeText from './welcomeText';
 
 export default function Welcome(props) {
 

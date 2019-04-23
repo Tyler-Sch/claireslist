@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
 
+// two functions:
+//   Item -> has info for item and logic to drop down to display more info
+//           when clicked
+//
+//   ItemAuxInfo -> simple display for additional infomation
+
 function ItemAuxInfo(props) {
   return (
 
