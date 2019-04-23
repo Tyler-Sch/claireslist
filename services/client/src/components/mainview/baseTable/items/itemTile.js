@@ -17,7 +17,7 @@ function ItemAuxInfo(props) {
           </p>
         </div>
         <div className="col-xs-6">
-          <p className="text-right">
+          <p className="text-right" style={{'overflowWrap': 'break-word'}}>
             {props.value}
           </p>
         </div>
@@ -38,8 +38,8 @@ export default function Item(props) {
     'Date Added': 'date_posted'
   };
 
-  const additInfo = Object.keys(additionalInfoMap).map(i => (
-    <ItemAuxInfo heading={i} value={props[additionalInfoMap[i]]} />
+  const additInfo = Object.keys(additionalInfoMap).map((i,idx) => (
+    <ItemAuxInfo key={idx} heading={i} value={props[additionalInfoMap[i]]} />
   ));
   console.log(additInfo)
 
@@ -57,7 +57,9 @@ export default function Item(props) {
       <div className="padding">
         { additInfo }
         <div className="padding">
-          <button className="full-btn margin">Change info</button>
+          <button className="full-btn margin" onClick={ props.focusTarget }>
+            Change info
+          </button>
         </div>
       </div>
     }
