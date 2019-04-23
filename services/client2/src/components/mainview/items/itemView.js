@@ -5,7 +5,7 @@ export default function ItemView(props) {
   // take a list of items in props and display each one
 
   return (
-    <div className="item-menu container">
+    <div className="item-menu">
       <div className="row">
         <div className="col-xs-6">
           <p className=" bigger text-left">

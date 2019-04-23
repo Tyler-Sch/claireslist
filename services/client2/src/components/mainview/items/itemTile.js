@@ -8,7 +8,7 @@ function ItemAuxInfo(props) {
       <div className="row border-solid-thin">
         <div className="col-xs-6">
           <p className="text-left">
-            {props.heading}
+            {props.heading}:
           </p>
         </div>
         <div className="col-xs-6">
@@ -26,7 +26,7 @@ export default function Item(props) {
 
   const dateAdded = new Date(props.date_posted);
   const additionalInfoMap = {
-    'Description:': 'description',
+    'Description': 'description',
     'Who has it': 'who_has_current',
     'Due back': 'due_back',
     'Can be borrowed for': 'how_long_can_borrow',
@@ -49,9 +49,9 @@ export default function Item(props) {
         </div>
       </div>
     {moreInfo &&
-      <div className="container padding">
+      <div className="padding">
         { additInfo }
-        <div className="container padding">
+        <div className="padding">
           <button className="full-btn margin">Change info</button>
         </div>
       </div>

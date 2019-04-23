@@ -43,10 +43,15 @@ export default function AddItemForm(props) {
         console.log(props.submitItemInfo);
         props.submitItemInfo(requestObj);
 
+        setName('');
+        setWhoOwns('');
+        setDueBack('');
+        setHowLongBorrow('');
+        setDescription('');
     };
 
     return (
-      <div className="container comfortable">
+      <div className="comfortable">
         <form className="form" onSubmit={e => createNewItem(e)}>
           <TextInput
             label='Name of item'
@@ -73,7 +78,9 @@ export default function AddItemForm(props) {
           onchange={setDescription}
           type="text"
          />
-      <a href="#" className="button">close</a>
+       <button onClick={() => window.location.hash = ''} className="button">
+         close
+       </button>
       <button className="button" type="submit">submit</button>
         </form>
       </div>

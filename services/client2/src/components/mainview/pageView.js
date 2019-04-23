@@ -26,8 +26,6 @@ export default function PageView(props) {
   // handles checking if room is private and checks given
   // password once given
   const getRoomInfo = async () => {
-    // const url = 'http://localhost:5001/tables/fetch';
-
     const response = await fetch(
       url,
       {
@@ -40,7 +38,6 @@ export default function PageView(props) {
     )
 
     const responseData = await response.json()
-    // console.log(responseData);
     if (responseData.status === 'password needed') {
       setNeedsPassword(true);
       window.location.hash = 'password-modal';
@@ -84,10 +81,10 @@ export default function PageView(props) {
       {
         isLoading
         ? <LoadingScreen />
-      : <TableView {...roomData}
-          baseRequestObj={requestData}
-          getRoomInfo={getRoomInfo}
-         />
+        : <TableView {...roomData}
+            baseRequestObj={requestData}
+            getRoomInfo={getRoomInfo}
+          />
       }
       { error && <p className="text-center">Something appears to have gone wrong</p>}
     </div>
