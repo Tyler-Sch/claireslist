@@ -29,14 +29,14 @@ export default function AddItemForm(props) {
       setDueBack,
       setHowLongBorrow,
       setDescription,
-      setWhoHasCurrent
+      setWhoHasCurrent,
+      submitItemInfo,
+      setTargetModifyItemIdx
     } = props;
-
-
 
     return (
       <div className="comfortable">
-        <form className="form" onSubmit={e => props.submitItemInfo(e)}>
+        <form className="form" onSubmit={e => submitItemInfo(e)}>
           <TextInput
             label='Name of item'
             value={name}
@@ -81,7 +81,7 @@ export default function AddItemForm(props) {
        <button onClick={(e) => {
            e.preventDefault();
            window.location.hash = '';
-           props.setTargetModifyItemIdx(null);
+           setTargetModifyItemIdx(null);
          }} className="button">
          close
        </button>

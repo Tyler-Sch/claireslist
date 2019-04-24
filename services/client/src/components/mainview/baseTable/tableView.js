@@ -5,7 +5,7 @@ import Modal from '../../generics/modal';
 import TextInput from '../../generics/textInput';
 import AddItemForm from './items/itemInputForm';
 
-// TableView contains the logic for creating ( and updating soon) items on
+// TableView contains the logic for creating  updating and displaying items on
 // the list.
 
 export default function TableView(props) {
@@ -39,7 +39,9 @@ export default function TableView(props) {
     const submitItemInfo = async () => {
         // function for adding new items to the database
         const reqData = baseRequestObj;
-        const url = urlBase + ((targetModifyItemIdx !== null) ? urlUpdateSuffix : urlCreateSuffix);
+        const url = urlBase + (
+          (targetModifyItemIdx !== null) ? urlUpdateSuffix : urlCreateSuffix
+        );
         const modifyObject = {};
 
 
@@ -111,6 +113,8 @@ export default function TableView(props) {
       setDueBack(targetItem.due_back);
       setHowLongBorrow(targetItem.how_long_can_borrow);
       setDescription(targetItem.description);
+      setWhoHasCurrent(targetItem.who_has_current);
+      
     };
 
     const resetFormData = () => {
@@ -123,7 +127,6 @@ export default function TableView(props) {
 
     return (
     <div>
-
       <Modal id="create-item-modal" header="create new item" >
         <AddItemForm
             submitItemInfo={submitItemInfo}
@@ -131,13 +134,10 @@ export default function TableView(props) {
             setTargetModifyItemIdx={setTargetModifyItemIdx}
             optional_info={targetModifyItemIdx != null}
         />
-
-
       </Modal>
       <div className="head">
         <p className='text-center bigger'>{props.room_name}</p>
       </div>
-
       <div className="container">
         <div className="">
           <a href="#create-item-modal">

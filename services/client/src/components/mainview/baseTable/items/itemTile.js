@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 function ItemAuxInfo(props) {
   return (
 
-      <div className="row border-solid-thin">
+      <div className="row border-solid-thin" style={{"marginTop":"1px"}}>
         <div className="col-xs-6">
           <p className="text-left">
             {props.heading}:
@@ -41,7 +41,6 @@ export default function Item(props) {
   const additInfo = Object.keys(additionalInfoMap).map((i,idx) => (
     <ItemAuxInfo key={idx} heading={i} value={props[additionalInfoMap[i]]} />
   ));
-  console.log(additInfo)
 
   return (
     <div >
