@@ -40,8 +40,6 @@ export default function TableView(props) {
         // function for adding new items to the database
         const reqData = baseRequestObj;
         const url = urlBase + ((targetModifyItemIdx !== null) ? urlUpdateSuffix : urlCreateSuffix);
-        console.log(url);
-        console.log(targetModifyItemIdx)
         const modifyObject = {};
 
 
@@ -92,7 +90,6 @@ export default function TableView(props) {
         // need to add a check for if the item is added to the room
         // successfully
         // also need to catch any sort of network error
-        // resetFormData();
         setTargetModifyItemIdx(null);
         getRoomInfo();
     };
@@ -132,6 +129,7 @@ export default function TableView(props) {
             submitItemInfo={submitItemInfo}
             {...itemDict}
             setTargetModifyItemIdx={setTargetModifyItemIdx}
+            optional_info={targetModifyItemIdx != null}
         />
 
 

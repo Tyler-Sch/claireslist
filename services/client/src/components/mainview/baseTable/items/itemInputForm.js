@@ -16,16 +16,7 @@ import TextInput from '../../../generics/textInput';
 // }
 
 export default function AddItemForm(props) {
-    // const [name, setName] = useState(props.name);
-    // const [who_owns, setWhoOwns] = useState(props.who_owns);
-    // const [due_back, setDueBack] = useState(props.due_back);
-    // const [how_long_can_borrow, setHowLongBorrow] = useState(
-    //   props.how_long_can_borrow
-    // );
-    // const [description, setDescription] = useState(props.description);
-    // const [who_has_current, setWhoHasCurrent] = useState(
-    //   props.who_has_current
-    // );
+
     const {
       name,
       who_owns,
@@ -41,33 +32,7 @@ export default function AddItemForm(props) {
       setWhoHasCurrent
     } = props;
 
-    const createNewItem = (e) => {
-        // e.preventDefault();
-        // window.location.hash = '';
-        // console.log('data to submit')
-        // console.log({
-        //     name,
-        //     who_owns,
-        //     due_back,
-        //     how_long_can_borrow
-        // })
-        // const requestObj = {
-        //     name,
-        //     who_owns,
-        //     'optional_fields':{
-        //         description,
-        //         how_long_can_borrow,
-        //     }
-        // };
-        // // console.log(props.submitItemInfo);
-        // props.submitItemInfo(requestObj);
-        //
-        // setName('');
-        // setWhoOwns('');
-        // setDueBack('');
-        // setHowLongBorrow('');
-        // setDescription('');
-    };
+
 
     return (
       <div className="comfortable">
@@ -97,6 +62,22 @@ export default function AddItemForm(props) {
           onchange={setDescription}
           type="text"
          />
+       { props.optional_info &&
+        <div>
+           <TextInput
+             label="Who has it currently: "
+             value={who_has_current}
+             onchange={setWhoHasCurrent}
+             type="text"
+            />
+          <TextInput
+            label="Due back: "
+            value={due_back}
+            onchange={setDueBack}
+            type="date"
+          />
+        </div>
+       }
        <button onClick={(e) => {
            e.preventDefault();
            window.location.hash = '';
