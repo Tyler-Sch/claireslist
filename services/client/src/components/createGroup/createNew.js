@@ -2,18 +2,23 @@ import React, { useState } from 'react';
 import CreateNewGroupForm from './newGroupForm';
 import { Redirect } from 'react-router-dom';
 
-export default function CreateNew(props) {
 
+// contains logic for creating a new room, setting private or not,
+// checking passwords match.
+export default function CreateNew(props) {
     const [roomNameInput, setRoomNameInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [isPrivate, setIsPrivate] = useState(false);
-    const [isCreatingNew, setIsCreatingNew] = useState(false);
-    const [hasCreated, setHasCreated] = useState(false);
+    // const [isCreatingNew, setIsCreatingNew] = useState(false);
+    // const [hasCreated, setHasCreated] = useState(false);
     const [roomLengthError, setRoomLengthError] = useState(false);
     const [redirect, setRedirect] = useState(false);
     const [newUrl, setNewUrl] = useState(null);
+    const url = 'http://localhost:5001/tables/create_new';
 
+
+    // function for creating new room and making api call
     const submitCreateRoom = async (e) => {
         e.preventDefault();
         // check to make sure length of room name is greater than 4
@@ -23,7 +28,6 @@ export default function CreateNew(props) {
           return
         }
         // send call to api to create a new room
-        const url = 'http://localhost:5001/tables/create_new';
         const data = {
           'roomName': roomNameInput,
           'private': isPrivate,
@@ -36,7 +40,7 @@ export default function CreateNew(props) {
             return;
           }
         }
-        setIsCreatingNew(true);
+        // setIsCreatingNew(true);
         const response = await fetch(
           url,
           {
@@ -47,9 +51,6 @@ export default function CreateNew(props) {
             body: JSON.stringify(data)
           }
         )
-
-        // redirect info should go here. make sure to
-        // add a thing for loading (when isCreatingNew = true)
         const responseData = await response.json()
         if (responseData.status === 'success') {
           console.log('new group created successfully');
@@ -57,26 +58,22 @@ export default function CreateNew(props) {
           setNewUrl(encodedRoomName);
           setRedirect(true);
         }
-
     }
-
 
 
   return (
     <div className='container box-shadow-double lemon-lime-gradient padding'
-          style={{'min-height': '30em'}}
-      >
-      {
-        redirect
-        ? (<Redirect to={'/group/' + newUrl} /> )
-      : (<CreateNewGroupForm {...{roomNameInput, passwordInput,
-                              setRoomNameInput, setPasswordInput,
-                              submitCreateRoom, confirmPassword,
-                              setConfirmPassword, isPrivate, setIsPrivate,
-                              roomLengthError
-                          }} />)
-      }
-
+          style={{'min-height': '30em'}}>
+          {
+            redirect
+            ? (<Redirect to={'/group/' + newUrl} /> )
+          : (<CreateNewGroupForm {...{roomNameInput, passwordInput,
+                                  setRoomNameInput, setPasswordInput,
+                                  submitCreateRoom, confirmPassword,
+                                  setConfirmPassword, isPrivate, setIsPrivate,
+                                  roomLengthError
+                              }} />)
+          }
     </div>
   )
 }

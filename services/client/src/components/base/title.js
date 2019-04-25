@@ -1,6 +1,9 @@
 import React from 'react';
 
+// title section of website. Is on all routes.
+
 export default function Title() {
+
   return (
     <div className="container">
       <div className="row">

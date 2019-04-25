@@ -1,7 +1,8 @@
 CreateNewGroup
   - have notifications for errors on the
     form come up when entered incorrectly.
+        - passwords dont match
+        - name of room too small 
 
 mainview
   - needs better names for files
-  

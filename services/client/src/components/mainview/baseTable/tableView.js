@@ -7,10 +7,9 @@ import AddItemForm from './items/itemInputForm';
 
 // TableView contains the logic for creating  updating and displaying items on
 // the list.
-
 export default function TableView(props) {
     const [targetModifyItemIdx, setTargetModifyItemIdx] = useState(null);
-    const urlBase = 'http://localhost:5001';
+    const urlBASE = 'http://localhost:5001';
     const urlCreateSuffix = '/tables/modify/create';
     const urlUpdateSuffix = '/tables/modify/update';
     const { baseRequestObj, getRoomInfo } = props;
@@ -36,15 +35,15 @@ export default function TableView(props) {
       setWhoHasCurrent
     }
 
+
+    // function for adding new items or modifying items in the database
     const submitItemInfo = async () => {
-        // function for adding new items to the database
         const reqData = baseRequestObj;
-        const url = urlBase + (
+        const url = urlBASE + (
           (targetModifyItemIdx !== null) ? urlUpdateSuffix : urlCreateSuffix
         );
+
         const modifyObject = {};
-
-
         const itemObj = {
           'type': 'create',
           'target': 'item',
@@ -60,7 +59,6 @@ export default function TableView(props) {
           reqData['action'] = itemObj
         }
         else {
-
           modifyObject['type'] = 'update';
           modifyObject['target'] = 'item';
           modifyObject['targetId'] = props.items[targetModifyItemIdx].id;
@@ -75,7 +73,6 @@ export default function TableView(props) {
           reqData['action'] = modifyObject;
         }
 
-
         const response = await fetch(
           url,
           {
@@ -88,7 +85,6 @@ export default function TableView(props) {
          );
 
         const data = await response.json();
-        console.log(data);
         // need to add a check for if the item is added to the room
         // successfully
         // also need to catch any sort of network error
@@ -96,6 +92,8 @@ export default function TableView(props) {
         getRoomInfo();
     };
 
+
+    // resets or loads form data when target item to modify is changed
     useEffect(() => {
       if (targetModifyItemIdx === null) {
         resetFormData();
@@ -106,6 +104,8 @@ export default function TableView(props) {
       }
     },[targetModifyItemIdx])
 
+
+    // used for modifying existing item. Preloads form data
     const setFormDataToAvailableItem = () => {
       const targetItem = props.items[targetModifyItemIdx];
       setName(targetItem.name);
@@ -114,8 +114,8 @@ export default function TableView(props) {
       setHowLongBorrow(targetItem.how_long_can_borrow);
       setDescription(targetItem.description);
       setWhoHasCurrent(targetItem.who_has_current);
-      
     };
+
 
     const resetFormData = () => {
       setName('');
@@ -124,6 +124,7 @@ export default function TableView(props) {
       setHowLongBorrow('');
       setDescription('');
     };
+
 
     return (
     <div>
@@ -150,5 +151,5 @@ export default function TableView(props) {
         </div>
       </div>
     </div>
-)
+    )
 }

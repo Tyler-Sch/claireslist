@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import TextInput from '../generics/textInput';
 
-export default function CreateNewGroupForm(props) {
 
-    // const [privateState, setPrivateState] = useState(true);
+export default function CreateNewGroupForm(props) {
 
     const handleRadioClick = () => {
       props.setIsPrivate(!props.isPrivate);
