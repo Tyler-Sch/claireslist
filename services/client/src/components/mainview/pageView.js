@@ -9,76 +9,75 @@ import Modal from '../generics/modal';
 // request data to its' child TableView (roomId and password)
 
 export default function PageView(props) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [needsPassword, setNeedsPassword] = useState(false);
-  const [password, setPassword] = useState('');
-  const [roomData, setRoomData] = useState({});
-  const [roomId, setRoomId] = useState(props.match.params.id);
-  const [error, setError] = useState(false);
-  const url = 'http://localhost:5001/tables/fetch';
+    const [isLoading, setIsLoading] = useState(true);
+    // const [needsPassword, setNeedsPassword] = useState(false);
+    const [password, setPassword] = useState('');
+    const [roomData, setRoomData] = useState({});
+    const [roomId, setRoomId] = useState(props.match.params.id);
+    const [error, setError] = useState(false);
+    const url = 'http://localhost:5001/tables/fetch';
+    const requestData = {
+        requestedRoom: roomId,
+        password
+    };
 
-  const requestData = {
-    requestedRoom: roomId,
-    password
-  };
 
-  useEffect(() => {
     // check if password needed and download info
-    getRoomInfo();
-  }, [])
+    useEffect(() => {
+        getRoomInfo();
+    }, [])
 
-  // handles checking if room is private and checks given
-  // password once given
-  const getRoomInfo = async () => {
-    const response = await fetch(
-      url,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestData)
+
+    // handles checking if room is private and checks given
+    // password once given
+    const getRoomInfo = async () => {
+        const response = await fetch(
+            url,
+            {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            }
+        )
+
+        const responseData = await response.json()
+
+        if (responseData.status === 'password needed') {
+          // setNeedsPassword(true);
+          window.location.hash = 'password-modal';
+          return
+        }
+        else if (responseData.status === 'success'){
+          setRoomData(responseData.roomInfo);
+          window.location.hash = '';
+          setIsLoading(false);
+        }
+        else {
+          console.log('There was an error in retrieving room info');
+          console.log(roomId);
+          console.log(responseData);
+          setError(true);
+        }
       }
-    )
 
-    const responseData = await response.json()
 
-    if (responseData.status === 'password needed') {
-      setNeedsPassword(true);
-      window.location.hash = 'password-modal';
-      return
+    const submitPassword = (e) => {
+        e.preventDefault();
+        getRoomInfo();
     }
-    else if (responseData.status === 'success'){
-      setRoomData(responseData.roomInfo);
-      // console.log(responseData.roomInfo);
-      window.location.hash = '';
-      setIsLoading(false);
-    }
-    else {
-      console.log('There was an error in retrieving room info');
-      console.log(roomId);
-      console.log(responseData);
-      setError(true);
-    }
-
-  }
-
-  const submitPassword = (e) => {
-    e.preventDefault();
-    setNeedsPassword(false);
-    getRoomInfo();
-  }
 
 
   return(
     <div>
       <Modal header='Password?' id="password-modal">
-          <form onSubmit={submitPassword}>
+          <form onSubmit={ submitPassword }>
             <TextInput
               label='Password'
               type='Password'
-              value={password}
-              onchange={setPassword}
+              value={ password }
+              onchange={ setPassword }
               />
             <button type="submit" className="full-btn">Submit</button>
           </form>
@@ -86,14 +85,13 @@ export default function PageView(props) {
       {
         isLoading
         ? <LoadingScreen />
-        : <TableView {...roomData}
-            baseRequestObj={requestData}
-            getRoomInfo={getRoomInfo}
+        : <TableView { ...roomData }
+            baseRequestObj={ requestData }
+            getRoomInfo={ getRoomInfo }
           />
       }
-      { error && <p className="text-center">Something appears to have gone wrong</p>}
+      { error &&
+          <p className="text-center">Something appears to have gone wrong</p> }
     </div>
-
-
   )
 }

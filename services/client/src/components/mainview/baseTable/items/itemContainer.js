@@ -19,11 +19,12 @@ export default function ItemContainer(props) {
         </div>
       </div>
       <div className="item-menu-body padding">
-        {props.items.map((i, idx) => (
-          <Item {...i} key={i.id} focusTarget={() => (
-              props.focusTarget(idx)
-            )}
-          />))}
+        { props.items.map((i, idx) => (
+              <Item {...i} key={i.id} focusTarget={ () => (
+                  props.focusTarget(idx)) }
+              />
+          )) 
+        }
       </div>
     </div>
 
