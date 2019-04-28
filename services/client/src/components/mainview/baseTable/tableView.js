@@ -50,7 +50,7 @@ export default function TableView(props) {
           name,
           who_owns,
           'optional_fields': {
-            description,
+              description,
             how_long_can_borrow
           }
         };

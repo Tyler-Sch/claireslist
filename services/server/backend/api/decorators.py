@@ -28,7 +28,7 @@ def check_private_room(fn):
                         'message': 'please supply a password'
                     }), 206
                 else:
-                    #check is password valid
+                    # check is password valid
                     if password == requested_room.password:
                         return fn(*args, **kwargs)
                     else:

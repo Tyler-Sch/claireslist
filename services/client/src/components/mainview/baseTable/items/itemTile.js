@@ -9,7 +9,6 @@ import React, { useState } from 'react';
 
 function ItemAuxInfo(props) {
   return (
-
       <div className="row border-solid-thin" style={{"marginTop":"1px"}}>
         <div className="col-xs-6">
           <p className="text-left">

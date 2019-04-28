@@ -15,13 +15,16 @@ def index():
 @server_blueprint.route('/tables/create_new', methods=['POST'])
 def create_table():
     """
-        takes json post request in format of
-            {
-                'roomName': roomName,
-                'private': True or False,
-                'password': password if private
-            }
-        returns
+        creates a new user group
+
+        INPUT:
+            takes json post request in format of
+                {
+                    'roomName': roomName,
+                    'private': True or False,
+                    'password': password if private
+                }
+        OUTPUT:
             {
                 'status': 'success' or 'error'
                 'url': encoded url (to be used for accessing)
@@ -53,14 +56,16 @@ def create_table():
 @check_private_room
 def getTable():
     """
-        input handled by decorator:
+        Gets based on encoded_room_name and returns table info
+
+        INPUT: (checked for validity by check_private_room decorator)
             request.json = {
                 'requestedRoom': Encoded room name,
                 'password': None (if not a private room) otherwise password
             }
-        passes on requested room via global context variable
+            passes on requested room via global context variable from decorator
 
-        output:
+        OUTPUT:
             json response {
                 'status':
                 'message':
@@ -104,13 +109,16 @@ def getTable():
 @check_private_room
 def delete_record():
     """
-        input: request with json in form of
+        Deletes record (not hooked up at the moment)
+
+        INPUT:
+            json in request
             {
                 requestedRoom:
                 password:
                 action: {
                     type: delete,
-                    target: [item, room, borrowHistory]
+                    target: item or room or borrowHistory
                     targetId: targetid
                 }
             }
@@ -123,16 +131,23 @@ def delete_record():
 @check_private_room
 def update_record():
     """
-        input: request with json
+        Updates an already existing item, room, or borrowHistory
+
+        INPUT: request with json
             {
                 requestedRoom:
                 password:
                 action: {
                     type: update,
-                    target: [item, room, or borrowHistory]
+                    target: item or room or borrowHistory
                     targetId: targetid
                     dataToUpdate: {column: newVal, column2: newVal...}
                 }
+            }
+        OUTPUT:
+            {
+                'status': success or error
+                'message': reason for error or success
             }
     """
     requested_room = g.room
@@ -183,7 +198,9 @@ def update_record():
 @check_private_room
 def create_item():
     """
-        input:
+        creates a new item
+
+        INPUT:
             request with json
             {
                 requestedRoom:
@@ -198,10 +215,13 @@ def create_item():
                         who_has_current:
                         how_long_can_borrow:
                         due_back:
-
                     }
-
                 }
+            }
+        OUTPUT:
+            {
+                'status': success or error
+                'message': reason for success or error
             }
     """
 
@@ -247,6 +267,9 @@ def create_item():
 @server_blueprint.route('/test/check-decorator')
 @check_private_room
 def testDecorator():
+    """
+        Function to test check_private_room decorator
+    """
     requested_room = g.room
     return jsonify({
         'status': 'success',
