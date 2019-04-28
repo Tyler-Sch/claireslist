@@ -15,7 +15,7 @@ export default function CreateNew(props) {
     const [roomLengthError, setRoomLengthError] = useState(false);
     const [redirect, setRedirect] = useState(false);
     const [newUrl, setNewUrl] = useState(null);
-    const url = 'http://localhost:5001/tables/create_new';
+    const url = `${process.env.REACT_APP_BACKEND}/tables/create_new`;
 
 
     // function for creating new room and making api call

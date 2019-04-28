@@ -9,7 +9,7 @@ import AddItemForm from './items/itemInputForm';
 // the list.
 export default function TableView(props) {
     const [targetModifyItemIdx, setTargetModifyItemIdx] = useState(null);
-    const urlBASE = 'http://localhost:5001';
+    const urlBASE = process.env.REACT_APP_BACKEND;
     const urlCreateSuffix = '/tables/modify/create';
     const urlUpdateSuffix = '/tables/modify/update';
     const { baseRequestObj, getRoomInfo } = props;

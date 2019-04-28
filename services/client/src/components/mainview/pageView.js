@@ -12,10 +12,10 @@ export default function PageView(props) {
     const [isLoading, setIsLoading] = useState(true);
     // const [needsPassword, setNeedsPassword] = useState(false);
     const [password, setPassword] = useState('');
-    const [roomData, setRoomData] = useState({});
+    const [roomData, setRoomData] = useState({'roomInfo':{}});
     const [roomId, setRoomId] = useState(props.match.params.id);
     const [error, setError] = useState(false);
-    const url = 'http://localhost:5001/tables/fetch';
+    const url = `${process.env.REACT_APP_BACKEND}/tables/fetch`;
     const requestData = {
         requestedRoom: roomId,
         password
