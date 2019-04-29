@@ -47,3 +47,7 @@ https://desolate-reaches-26693.herokuapp.com
 * [Flask](http://flask.pocoo.org/)
 * [React](https://reactjs.org/)
 * [Brutalist Framework](http://www.brutalistframework.com/)
+* [Docker](https://www.docker.com)
+
+## Deployed on:
+* [Heroku](https://www.heroku.com)
