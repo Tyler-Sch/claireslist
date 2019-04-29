@@ -21,11 +21,12 @@ download files
 ```
 git clone https://github.com/wintermutestoothache/claireslist.git
 ```
-navigate to directory, build with docker-compose, and spin up backend
+navigate to directory, build with docker-compose, spin up backend and test
 ```
 cd claireslist
 docker-compose -f docker-compose-dev.yml up -d --build
 docker-compose -f docker-compose-dev.yml exec backend python manage.py recreate_db
+docker-compose -f docker-compose-dev.yml exec backend pytest
 ```
 navigate to services/client and build react frontend
 ```
@@ -37,3 +38,12 @@ Spin up the frontend and navigate to http://localhost:3000
 ```
 npm start
 ```
+
+## See a live example at:
+
+https://desolate-reaches-26693.herokuapp.com
+
+## Built with:
+* [Flask] (http://flask.pocoo.org/)
+* [React] (https://reactjs.org/)
+* [Brutalist Framework] (http://www.brutalistframework.com/)
