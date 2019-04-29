@@ -44,6 +44,6 @@ npm start
 https://desolate-reaches-26693.herokuapp.com
 
 ## Built with:
-* [Flask] (http://flask.pocoo.org/)
-* [React] (https://reactjs.org/)
-* [Brutalist Framework] (http://www.brutalistframework.com/)
+* [Flask](http://flask.pocoo.org/)
+* [React](https://reactjs.org/)
+* [Brutalist Framework](http://www.brutalistframework.com/)
